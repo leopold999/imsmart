@@ -13,7 +13,7 @@ export default class Carousel {
         };
 
         this._elCarousel.addEventListener('mousedown', e => {
-            console.log(e.x)
+    
             if (e.target.closest('.strip')) {
            
                 this._startDrag(event.clientX, event.clientY);
@@ -42,9 +42,9 @@ export default class Carousel {
     _moveTo(clientX) {
         
         let newLeft = clientX - this._shiftX - this._carouselCoords.left;
-        console.log(newLeft);
+       
         if (newLeft < 0) {
-            newLeft = -50;
+            newLeft = -40;
         }
 
         let rightEdge = this._elCarousel.offsetWidth - this._elStrip.offsetWidth;
