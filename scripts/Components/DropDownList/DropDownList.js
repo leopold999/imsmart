@@ -1,12 +1,17 @@
 export default class DropDownList {
-    constructor({ elementMenu }) {
+    constructor({ elementMenu, dropComponent }) {
         this._elMenuContainer = elementMenu;
-        this._elMenu = this._elMenuContainer.querySelector('.menu-services')
-        this._elemDropDown = document.querySelector('.drop-down');
-        this._elemMenuCoord = this._elMenu.getBoundingClientRect();
+        this._dropComponent = dropComponent;
 
- 
+        this._elMenu = this._elMenuContainer.querySelector('.menu-services')
+        this._elemDropDownMenu = document.querySelector('.drop-down');
+        this._elemMenuCoord = getCoords(this._elMenu);
+   
         
+        window.onresize = () => {
+            this._elemMenuCoord = getCoords(this._elMenu);
+        }
+
         document.onmouseover = e => {
             if (e.target.closest('.menu-services') || e.target.closest('.drop-down') ) {
                 this._render();
@@ -14,34 +19,29 @@ export default class DropDownList {
                 this._deleteList();
             }
         }
-
         
-
-       
-
-
-
-    
     }
 
     _render() {   
-        this._elemDropDown.innerHTML = `
-                <ul>
-                    <li>Энергоаудит</li>
-                    <li>Умный дом</li>
-                    <li>Энергосбережение</li>
-                    <li>Инжениринг</li>
-                </ul>
-        `;
-        this._elemDropDown.style.top = this._elemMenuCoord.y + this._elMenu.clientHeight - 5 + 'px';
-        this._elemDropDown.style.left = this._elemMenuCoord.x - 10 - this._elMenu.offsetWidth + (this._elemDropDown.offsetWidth / 2) + 'px';
-        this._elemDropDown.style.transform =  'scale(1)';
+        this._elemDropDownMenu.innerHTML = this._dropComponent;
+        this._elemDropDownMenu.style.top = this._elemMenuCoord.top + this._elMenu.offsetHeight + 'px';
+        this._elemDropDownMenu.style.left = this._elemMenuCoord.left - 12  + 'px';
+        this._elemDropDownMenu.style.transform =  'scale(1.1)';
     }
 
     _deleteList() {
-        this._elemDropDown.style.transform =  'scale(0.87)';
-        this._elemDropDown.innerHTML = '';
-        
+        this._elemDropDownMenu.style.transform =  'scale(0.87)';
+        this._elemDropDownMenu.innerHTML = '';
     }
 }
+
+function getCoords(elem) {
+    let box = elem.getBoundingClientRect();
+    return {
+        top: box.top + pageYOffset,
+        left: box.left + pageXOffset,
+    };
+    
+}
+
 
